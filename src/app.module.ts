@@ -13,6 +13,8 @@ import { Message } from './chat/message.entity';
       driver: ApolloDriver,
       autoSchemaFile: true,
       installSubscriptionHandlers: true,
+      introspection: true,
+      playground: true,
     }),
     ChatModule,
     TypeOrmModule.forRoot({
