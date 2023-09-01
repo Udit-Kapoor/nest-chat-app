@@ -18,6 +18,16 @@ export class ChatResolver {
     return this.messageRepository.find();
   }
 
+  @Query(() => [Message])
+  async getMessagesBySender(@Args('sender') sender: string) {
+    // Query your database to fetch messages by sender
+    return await this.messageRepository.find({
+      where: {
+        sender: sender,
+      },
+    });
+  }
+
   @Mutation(() => Message)
   async sendMessage(
     @Args('content') content: string,
@@ -25,9 +35,11 @@ export class ChatResolver {
   ) {
     const timestamp = new Date().toISOString();
     const message = { content, sender, timestamp };
-    const savedMessage = await this.messageRepository.save(message) as Message;
+    const savedMessage = (await this.messageRepository.save(
+      message,
+    )) as Message;
     pubSub.publish('messageSent', { messageSent: savedMessage });
-    console.log('recieved and saved from server' , savedMessage);
+    console.log('recieved and saved from server', savedMessage);
     return savedMessage;
   }
 
