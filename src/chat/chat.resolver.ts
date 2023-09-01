@@ -25,6 +25,9 @@ export class ChatResolver {
       where: {
         sender: sender,
       },
+      order: {
+        timestamp: `DESC`
+      },
     });
   }
 
